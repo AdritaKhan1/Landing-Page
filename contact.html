@@ -1,0 +1,134 @@
+﻿<!DOCTYPE HTML>
+<!--
+	Solid State by HTML5 UP — extended for Adrita Khan
+-->
+<html>
+	<head>
+		<title>Contact — Adrita Khan</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="assets/css/custom.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+		<script src="assets/js/config.js"></script>
+	</head>
+	<body class="is-preload">
+
+		<!-- Navigation -->
+			<nav id="ak-nav">
+				<a class="ak-brand" href="index.html">Adrita Khan</a>
+				<ul class="ak-links">
+					<li><a href="index.html">Home</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="projects.html">Projects</a></li>
+					<li><a href="experience.html">Experience</a></li>
+					<li><a href="contact.html" class="active">Contact</a></li>
+				</ul>
+			</nav>
+
+		<!-- Page Wrapper -->
+			<div id="page-wrapper">
+
+				<!-- Banner -->
+					<section id="banner" style="min-height:auto;padding:6em 0 4em 0;">
+						<div class="inner">
+							<h2>Contact</h2>
+							<p>I'd love to hear from you!</p>
+						</div>
+					</section>
+
+				<!-- Content -->
+					<div class="ak-page">
+						<h2 class="major">Send a message</h2>
+						<p class="ak-lead">Fill this out and I'll get back to you. Or reach out directly using the details below.</p>
+
+						<form class="ak-form" id="ak-contact-form" method="POST">
+							<label for="ak-name">Your name</label>
+							<input id="ak-name" name="name" type="text" placeholder="Jane Doe" required />
+
+							<label for="ak-email">Your email</label>
+							<input id="ak-email" name="email" type="email" placeholder="jane@example.com" required />
+
+							<label for="ak-subject">Subject</label>
+							<input id="ak-subject" name="subject" type="text" placeholder="Let's connect" />
+
+							<label for="ak-message">Message</label>
+							<textarea id="ak-message" name="message" rows="6" placeholder="Hi Adrita,&#10;&#10;..."></textarea>
+
+							<!-- Honeypot: hidden from humans, filled by bots -->
+							<input name="website" type="text" style="display:none" tabindex="-1" autocomplete="off" />
+
+							<button type="submit" class="button primary" id="ak-contact-btn">Send message</button>
+
+							<div id="ak-contact-status" style="margin-top:1em;display:none;"></div>
+						</form>
+
+						<script>
+						(function () {
+							var form = document.getElementById('ak-contact-form');
+							var btn  = document.getElementById('ak-contact-btn');
+							var status = document.getElementById('ak-contact-status');
+
+							form.addEventListener('submit', function (e) {
+								e.preventDefault();
+								btn.disabled = true;
+								btn.textContent = 'Sending…';
+								status.style.display = 'none';
+
+								fetch('contact.php', {
+									method: 'POST',
+									body: new FormData(form)
+								})
+								.then(function (r) { return r.json(); })
+								.then(function (data) {
+									if (data.ok) {
+										form.reset();
+										status.style.cssText = 'display:block;color:#a8e6a3;';
+										status.textContent = 'Message sent! I\'ll get back to you soon.';
+										btn.textContent = 'Send message';
+										btn.disabled = false;
+									} else {
+										throw new Error(data.error || 'Something went wrong.');
+									}
+								})
+								.catch(function (err) {
+									status.style.cssText = 'display:block;color:#f4a0a0;';
+									status.textContent = err.message || 'Could not send — please email me directly.';
+									btn.textContent = 'Send message';
+									btn.disabled = false;
+								});
+							});
+						})();
+						</script>
+
+						<hr style="margin:3em 0;border:0;border-top:1px solid rgba(255,255,255,0.12);" />
+
+						<h2 class="major">Stay connected!</h2>
+						<ul class="contact">
+							<li class="icon solid fa-envelope"><a href="mailto:adrita.khan@torontomu.ca">adrita.khan@torontomu.ca</a></li>
+							<li class="icon brands fa-linkedin"><a href="https://www.linkedin.com/in/adrita-khan-8b1017208/" target="_blank" rel="noopener">LinkedIn</a></li>
+							</ul>
+					</div>
+
+				<!-- Footer -->
+					<section id="footer">
+						<div class="inner">
+							<ul class="copyright">
+								<li>&copy; Adrita Khan 2026. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+							</ul>
+						</div>
+					</section>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="assets/js/analytics.js"></script>
+			<script src="assets/js/chatbot.js"></script>
+
+	</body>
+</html>
