@@ -1,10 +1,3 @@
-/* =========================================================
-   Adrita's Assistant — chat widget
-   ---------------------------------------------------------
-   • When window.AK_CONFIG.chatEndpoint is set: calls chat.php
-     which proxies to the Claude AI API.
-   • Otherwise falls back to the built-in keyword matcher.
-   ========================================================= */
 (function () {
 	"use strict";
 
@@ -16,7 +9,7 @@
 		tagline: "A biologist turned software engineer."
 	};
 
-	/* ---- Built-in knowledge base (fallback when no API endpoint) ---- */
+	/* ---- Built-in knowledge base ---- */
 	var KB = [
 		{
 			id: "greeting",
@@ -120,12 +113,6 @@
 		linkedin: PROFILE.linkedin
 	};
 
-	/* Static nav chips shown after every AI response */
-	var AI_NAV_CHIPS = ["About →about", "Projects →projects", "Experience →experience", "Contact →contact"];
-
-	/* Conversation history sent to the AI (role/content pairs) */
-	var history = [];
-
 	/* ---------------- Local keyword matcher ---------------- */
 	function normalize(s) { return (" " + s.toLowerCase() + " ").replace(/[^a-z0-9\s]/g, " "); }
 
@@ -208,48 +195,8 @@
 		panel.querySelector("#ak-chat-send").disabled = !on;
 	}
 
-	/* ---------------- AI response via chat.php ---------------- */
-	function getEndpoint() {
-		var cfg = window.AK_CONFIG;
-		return (cfg && cfg.chatEndpoint && cfg.chatEndpoint.trim()) ? cfg.chatEndpoint.trim() : null;
-	}
-
-	function botRespondAI(userText, typing) {
-		fetch(getEndpoint(), {
-			method: "POST",
-			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ message: userText, history: history })
-		})
-		.then(function (res) { return res.json(); })
-		.then(function (data) {
-			typing.remove();
-			setInputEnabled(true);
-			if (data.error) {
-				/* API error — fall back to local KB silently */
-				var local = findReply(userText);
-				addMessage(local.reply, "bot");
-				renderChips(local.chips);
-				return;
-			}
-			var reply = data.reply || "Sorry, I couldn't get a response right now.";
-			addMessage(reply, "bot");
-			renderChips(AI_NAV_CHIPS);
-			/* Keep history for context */
-			history.push({ role: "user",      content: userText });
-			history.push({ role: "assistant", content: reply    });
-		})
-		.catch(function () {
-			typing.remove();
-			setInputEnabled(true);
-			/* Network error — fall back to local KB */
-			var local = findReply(userText);
-			addMessage(local.reply, "bot");
-			renderChips(local.chips);
-		});
-	}
-
-	/* ---------------- Local fallback response ---------------- */
-	function botRespondLocal(userText, typing) {
+	/* ---------------- Bot response ---------------- */
+	function botRespond(userText, typing) {
 		setTimeout(function () {
 			typing.remove();
 			setInputEnabled(true);
@@ -266,11 +213,7 @@
 		addMessage(text, "user");
 		setInputEnabled(false);
 		var typing = showTyping();
-		if (getEndpoint()) {
-			botRespondAI(text, typing);
-		} else {
-			botRespondLocal(text, typing);
-		}
+		botRespond(text, typing);
 	}
 
 	function togglePanel(open) {
@@ -292,7 +235,7 @@
 		panel.innerHTML =
 			'<div id="ak-chat-header">' +
 				'<div class="ak-avatar">AK</div>' +
-				‘<div><div class="ak-title">Adrita’s Assistant</div>’ +
+				‘<div><div class="ak-title">Adrita\’s Assistant</div>’ +
 				'<div class="ak-sub">Ask me anything about Adrita</div></div>' +
 				'<button class="ak-close" aria-label="Close chat">&times;</button>' +
 			'</div>' +
