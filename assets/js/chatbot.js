@@ -235,7 +235,7 @@
 		panel.innerHTML =
 			'<div id="ak-chat-header">' +
 				'<div class="ak-avatar">AK</div>' +
-				‘<div><div class="ak-title">Adrita\’s Assistant</div>’ +
+				'<div><div class="ak-title">Adrita\'s Assistant</div>' +
 				'<div class="ak-sub">Ask me anything about Adrita</div></div>' +
 				'<button class="ak-close" aria-label="Close chat">&times;</button>' +
 			'</div>' +
