@@ -6,8 +6,8 @@ My personal portfolio, built from scratch on top of an HTML5 UP template that I 
 
 I didn't just drop a template online, I used it as a starting point and built a fully functional site around it. Here's what I added:
 
-### AI Chat Assistant
-Integrated the Claude API (Anthropic) into a custom chat widget. Visitors can ask questions about my background, skills, and projects and get real, conversational answers. I wrote a PHP proxy (`chat.php`) to keep the API key server-side, pass conversation history for multi-turn context, and fall back gracefully to a keyword-based assistant if the API is unavailable.
+### Chat Assistant
+Built a custom keyword-based chat widget that lets visitors ask questions about my background, skills, and projects. The bot uses a scored intent matcher to find the best response from a knowledge base and renders navigation chips so visitors can jump directly to any page on the site.
 
 ### Live GitHub Projects Feed
 The Projects page pulls my public repositories directly from the GitHub REST API — no manual updates needed. Each card shows the repo description, language, and links to the source and live demo if one is deployed.
@@ -25,8 +25,7 @@ Visitors can like individual projects. Likes are stored in Firebase Realtime Dat
 | Layer | Tools |
 |-------|-------|
 | Frontend | HTML5, CSS3, Vanilla JavaScript |
-| Backend | PHP (contact form, AI proxy) |
-| AI | Claude API — claude-haiku-4-5 (Anthropic) |
+| Backend | PHP (contact form) |
 | Database | Firebase Realtime Database |
 | Data | GitHub REST API |
 | Analytics | GoatCounter |
@@ -42,7 +41,7 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-The contact form and AI chat require a PHP server with cURL and valid API keys. Everything else works on a plain static server.
+The contact form requires a PHP server with cURL. Everything else works on a plain static server.
 
 ---
 
