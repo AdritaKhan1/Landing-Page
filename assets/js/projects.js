@@ -16,13 +16,74 @@
 	var HIDE_FORKS = true;
 	var SORT_BY = "updated"; // "updated" | "stars"
 
-	/* Override links or descriptions for specific repos */
+	/* Override links or descriptions for specific repos.
+	   Fields you can set per repo (all optional):
+	     url         - override the "Code" link target
+	     hideCode    - true to hide the "Code" button entirely (e.g. private/closed-source demos)
+	     codeMessage - keep the "Code" button visible, but clicking it shows this message
+	                   instead of opening the repo (e.g. "Needs permission")
+	     demoUrl     - force a "Live Demo" link even if GitHub has no homepage set
+	     demoMessage - shown when there's no live URL and the demo button is clicked
+	     videoUrl    - adds a "Watch Demo" button linking to a YouTube video
+	     order       - pins the card to a fixed position (lower = earlier). Projects
+	                   without an "order" sort by last-updated among themselves, and
+	                   slot in between whatever low/high order values are pinned. */
 	var OVERRIDES = {
 		"Landing-Page": {
 			url: "https://github.com/AdritaKhan1/Landing-Page",
 			demoMessage: "You’re already on it!"
+		},
+		"Picture-Gallery": {
+			videoUrl: "https://youtu.be/esnb7jctIlA"
+		},
+		"SynqSpace": {
+			demoUrl: "https://synq-space-dnns.vercel.app/",
+			codeMessage: "Needs permission",
+			order: 2
+		},
+		"Pantry-App": {
+			videoUrl: "https://www.youtube.com/watch?v=G8TIJ-rsNoI",
+			order: 1000
+		},
+		"CheckIn/Out at Kumon": {
+			videoUrl: "https://youtu.be/CGRHkmxx6nQ",
+			hideCode: true,
+			order: 1
 		}
+		/* Example: demo-only project with code kept private
+		"My-Closed-Source-App": {
+			demoUrl: "https://myapp.example.com",
+			hideCode: true
+		}
+		*/
 	};
+
+	/* Manual project cards — for repos that AREN'T public on GitHub (private
+	   repos, or ones you haven't pushed), so the live GitHub fetch can't find
+	   them. Each entry here gets a card just like a fetched repo, and the
+	   OVERRIDES above (by "name") still apply to it. */
+	var MANUAL_PROJECTS = [
+		{
+			name: "SynqSpace",
+			description: "A live classroom for tutoring, live video and a shared whiteboard in one room.",
+			language: "JavaScript",
+			updated_at: "2026-07-01T00:00:00Z",
+			html_url: "https://github.com/AdritaKhan1/SynqSpace",
+			homepage: null,
+			fork: false,
+			stargazers_count: 0
+		},
+		{
+			name: "CheckIn/Out at Kumon",
+			description: "Built a full-stack Django attendance system supporting barcode check-in/out, real-time session tracking, automated parent email notifications, and Excel-based bulk student management across multiple centres. (Ongoing project)",
+			language: "Python",
+			updated_at: "2026-07-31T00:00:00Z",
+			html_url: "",
+			homepage: null,
+			fork: false,
+			stargazers_count: 0
+		}
+	];
 
 	/* Language color dots (GitHub-ish) */
 	var LANG_COLORS = {
@@ -43,7 +104,8 @@
 		statusEl.innerHTML = msg;
 	}
 
-	function liveUrlFor(repo) {
+	function liveUrlFor(repo, override) {
+		if (override && override.demoUrl) return override.demoUrl;
 		if (repo.homepage && /^https?:\/\//i.test(repo.homepage)) return repo.homepage;
 		return null; // only embed when we know a real deployed URL exists
 	}
@@ -52,15 +114,28 @@
 		return "https://" + GITHUB_USERNAME + ".github.io/" + repo.name + "/";
 	}
 
+	function youtubeThumbUrl(videoUrl) {
+		var m = videoUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/);
+		return m ? "https://img.youtube.com/vi/" + m[1] + "/hqdefault.jpg" : null;
+	}
+
 	function card(repo) {
-		var live = liveUrlFor(repo);
+		var override = OVERRIDES[repo.name] || {};
+		var live = liveUrlFor(repo, override);
 		var c = document.createElement("div");
 		c.className = "ak-card";
 
 		/* preview */
+		var videoThumb = override.videoUrl ? youtubeThumbUrl(override.videoUrl) : null;
 		var preview = '<div class="ak-card-preview">';
 		if (live) {
 			preview += '<iframe src="' + live + '" loading="lazy" title="Preview of ' + repo.name + '"></iframe>';
+		} else if (videoThumb) {
+			preview +=
+				'<a href="' + override.videoUrl + '" target="_blank" rel="noopener" class="ak-preview-video" title="Watch demo video">' +
+					'<img src="' + videoThumb + '" alt="' + repo.name + ' demo thumbnail" loading="lazy">' +
+					'<span class="ak-preview-play">&#9654;</span>' +
+				'</a>';
 		} else {
 			preview += '<div class="ak-preview-fallback"><span class="icon brands fa-github">&#128187;</span></div>';
 		}
@@ -76,8 +151,8 @@
 		meta += '</div>';
 
 		/* actions */
-		var override = OVERRIDES[repo.name] || {};
 		var codeUrl  = override.url || repo.html_url;
+		var showCode = override.hideCode !== true;
 
 		var demoBtn;
 		if (live) {
@@ -88,10 +163,24 @@
 			demoBtn = '';
 		}
 
+		var videoBtn = override.videoUrl
+			? '<a class="ak-video-btn" href="' + override.videoUrl + '" target="_blank" rel="noopener" title="Watch demo video" aria-label="Watch demo video">&#9654;</a>'
+			: '';
+
+		var codeBtn;
+		if (!showCode) {
+			codeBtn = '';
+		} else if (override.codeMessage) {
+			codeBtn = '<button class="ak-code-msg" onclick="this.textContent=\'' + override.codeMessage + '\';setTimeout(function(el){return function(){el.textContent=\'Code\'}}(this),2000)">Code</button>';
+		} else {
+			codeBtn = '<a href="' + codeUrl + '" target="_blank" rel="noopener">Code</a>';
+		}
+
 		var actions =
 			'<div class="ak-actions">' +
 				demoBtn +
-				'<a href="' + codeUrl + '" target="_blank" rel="noopener">Code</a>' +
+				videoBtn +
+				codeBtn +
 				'<button class="ak-like-btn" data-repo="' + repo.name + '"><span class="ak-heart">&#9829;</span> <span class="ak-like-count">0</span></button>' +
 			'</div>';
 
@@ -114,21 +203,36 @@
 		   so the hit has time to send). */
 		var demoEl = c.querySelector(".ak-actions a.primary");
 		if (demoEl) demoEl.addEventListener("click", function () { trackClick(live ? "demo" : "pages"); });
-		var codeEl = c.querySelector('.ak-actions a[href="' + repo.html_url + '"]');
-		if (codeEl) codeEl.addEventListener("click", function () { trackClick("code"); });
+		var videoEl = c.querySelector(".ak-actions a.ak-video-btn");
+		if (videoEl) videoEl.addEventListener("click", function () { trackClick("video"); });
+		var videoThumbEl = c.querySelector(".ak-card-preview a.ak-preview-video");
+		if (videoThumbEl) videoThumbEl.addEventListener("click", function () { trackClick("video"); });
+		if (showCode) {
+			var codeEl = override.codeMessage
+				? c.querySelector(".ak-actions button.ak-code-msg")
+				: c.querySelector('.ak-actions a[href="' + codeUrl + '"]');
+			if (codeEl) codeEl.addEventListener("click", function () { trackClick(override.codeMessage ? "code-blocked" : "code"); });
+		}
 
 		return c;
+	}
+
+	var DEFAULT_ORDER = 500;
+	function orderFor(repo) {
+		var o = OVERRIDES[repo.name] && OVERRIDES[repo.name].order;
+		return (typeof o === "number") ? o : DEFAULT_ORDER;
 	}
 
 	function render(repos) {
 		if (HIDE_FORKS) repos = repos.filter(function (r) { return !r.fork; });
 		if (!repos.length) { setStatus("No public repositories found yet.", false); return; }
 
-		if (SORT_BY === "stars") {
-			repos.sort(function (a, b) { return b.stargazers_count - a.stargazers_count; });
-		} else {
-			repos.sort(function (a, b) { return new Date(b.updated_at) - new Date(a.updated_at); });
-		}
+		repos.sort(function (a, b) {
+			var oa = orderFor(a), ob = orderFor(b);
+			if (oa !== ob) return oa - ob;
+			if (SORT_BY === "stars") return b.stargazers_count - a.stargazers_count;
+			return new Date(b.updated_at) - new Date(a.updated_at);
+		});
 
 		statusEl.style.display = "none";
 		gridEl.innerHTML = "";
@@ -146,6 +250,7 @@
 				if (!res.ok) throw new Error("GitHub returned status " + res.status + ".");
 				return res.json();
 			})
+			.then(function (repos) { return repos.concat(MANUAL_PROJECTS); })
 			.then(render)
 			.catch(function (err) { setStatus("Couldn't load projects: " + err.message, true); });
 	}

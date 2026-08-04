@@ -52,9 +52,7 @@ questions about you and helps visitors jump to any page. It runs entirely in
 the browser — no key, no server — so it works on localhost and any host.
 
 To keep its answers current, edit the `PROFILE` and `KB` list at the top of
-`assets/js/chatbot.js`. Want an open-ended AI version instead? See
-`assets/js/chatbot-ai.example.js` (an API key must live on a server, not in
-the page).
+`assets/js/chatbot.js`.
 
 ## 4. Analytics — visitors & project clicks
 Two numbers get tracked: **page visits** (counted automatically on every page)
@@ -100,7 +98,6 @@ about.html, projects.html, contact.html, stats.html
 assets/css/custom.css
 assets/js/config.js                (edit this one)
 assets/js/chatbot.js
-assets/js/chatbot-ai.example.js     (optional AI upgrade)
 assets/js/analytics.js
 assets/js/projects.js
 assets/js/stats.js
