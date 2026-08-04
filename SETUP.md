@@ -1,23 +1,22 @@
 # Your site — what's new & how to use it
 
 Your landing page now has a navigation bar, four new pages, a chat assistant
-on every page, and live visitor/click stats. Here's everything you need.
+on every page, and visitor/click analytics. Here's everything you need.
 
 ## New pages
 - **index.html** — your home page (now with nav + assistant)
 - **about.html** — full bio, education, goals, and highlights
 - **projects.html** — your GitHub projects, loaded live
 - **contact.html** — contact details + a message form
-- **stats.html** — public visitor & project-click counts
 
 ## One file to configure everything
 Open **`assets/js/config.js`** — this is the only file you normally edit:
 
 ```js
 window.AK_CONFIG = {
-  githubUsername:    "YOUR_GITHUB_USERNAME",  // for Projects + Stats
+  githubUsername:    "YOUR_GITHUB_USERNAME",  // for the Projects page
   analyticsProvider: "goatcounter",           // or "ga4" / "none"
-  goatcounterCode:   "YOUR_CODE",             // for analytics + Stats
+  goatcounterCode:   "YOUR_CODE",             // for analytics
   ga4Id:             "G-XXXXXXXXXX",           // only if using ga4
   countLocalhost:    true
 };
@@ -67,26 +66,7 @@ Turn it on:
 Prefer **Google Analytics**? Set `analyticsProvider: "ga4"` and your `G-XXXX`
 ID in `ga4Id`; read stats in the Google Analytics dashboard.
 
-## 5. The public Stats page (stats.html)
-This page shows the numbers **on your site**, so visitors and you can both see
-them — total page views, visits per page, and clicks per project (ranked).
-
-It reads the counts from GoatCounter's free public counter, so two things must
-be true:
-1. `analyticsProvider` is `"goatcounter"` and `goatcounterCode` is set
-   (step 4 above), and
-2. In GoatCounter, open **Settings** and tick
-   **"Allow adding visitor counts on your website."**
-   (It's off by default — this is what makes the numbers publicly readable.)
-
-Notes:
-- A brand-new GoatCounter site shows zeros until it records some visits.
-- "Clicks by project" counts how many *visitors* opened each project's links.
-  GoatCounter de-duplicates repeat clicks from the same visitor in a session,
-  so it reflects genuine interest rather than raw button mashing.
-- Stats only appear for projects whose repos load from your GitHub username.
-
-## 6. The contact form
+## 5. The contact form
 The form on `contact.html` opens the visitor's email app with their message
 pre-filled to you. Prefer messages to arrive without the visitor needing an
 email client? Formspree or Netlify Forms drop in with a few lines — happy to
@@ -94,13 +74,12 @@ wire that up.
 
 ## Files added
 ```
-about.html, projects.html, contact.html, stats.html
+about.html, projects.html, contact.html
 assets/css/custom.css
 assets/js/config.js                (edit this one)
 assets/js/chatbot.js
 assets/js/analytics.js
 assets/js/projects.js
-assets/js/stats.js
 SETUP.md
 ```
 `index.html` was edited to add the nav bar, the assistant, and analytics.

@@ -20,9 +20,6 @@ A PHP mail handler (`contact.php`) that receives form submissions, sanitizes inp
 ### Firebase Project Likes
 Visitors can like individual projects. Likes are stored in Firebase Realtime Database and persist across sessions using localStorage to prevent duplicate likes.
 
-### Public Stats Page
-A `stats.html` page shows total visits and per-project click counts, sourced from GoatCounter's public counter API.
-
 ---
 
 ## Tech stack

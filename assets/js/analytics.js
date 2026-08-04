@@ -2,16 +2,12 @@
    Analytics for Adrita's site
    ---------------------------------------------------------
    • Counts page visits automatically (every page).
-   • Counts project clicks as paths under /p/<repo>, so the
-     public Stats page can read them back with no login.
+   • Counts project clicks as paths under /p/<repo>.
    • Reads all settings from assets/js/config.js (AK_CONFIG).
 
    GoatCounter setup:
      1. Sign up at https://www.goatcounter.com, pick a "code".
      2. Put it in config.js -> goatcounterCode.
-     3. In GoatCounter: Settings -> tick
-        "Allow adding visitor counts on your website"
-        (required so the Stats page can read the numbers).
    ========================================================= */
 (function () {
 	"use strict";
