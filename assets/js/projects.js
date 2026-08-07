@@ -25,6 +25,10 @@
 	     demoUrl     - force a "Live Demo" link even if GitHub has no homepage set
 	     demoMessage - shown when there's no live URL and the demo button is clicked
 	     videoUrl    - adds a "Watch Demo" button linking to a YouTube video
+	     previewImage - use a static image (path under images/) as the card preview
+	                   instead of the live iframe. Use this when a site refuses to be
+	                   framed (sends X-Frame-Options/CSP frame-ancestors), which
+	                   would otherwise show as a blank/broken box.
 	     order       - pins the card to a fixed position (lower = earlier). Projects
 	                   without an "order" sort by last-updated among themselves, and
 	                   slot in between whatever low/high order values are pinned. */
@@ -40,6 +44,12 @@
 			demoUrl: "https://synq-space-dnns.vercel.app/",
 			codeMessage: "Needs permission",
 			order: 2
+		},
+		"Hotel-Reservations": {
+			/* book-canada.onrender.com sends X-Frame-Options: DENY, so it can
+			   never render in the live-preview iframe — use a static screenshot
+			   instead. The Live Demo button still opens the real site. */
+			previewImage: "images/bookcanada.png"
 		},
 		"Pantry-App": {
 			videoUrl: "https://www.youtube.com/watch?v=G8TIJ-rsNoI",
@@ -128,7 +138,9 @@
 		/* preview */
 		var videoThumb = override.videoUrl ? youtubeThumbUrl(override.videoUrl) : null;
 		var preview = '<div class="ak-card-preview">';
-		if (live) {
+		if (override.previewImage) {
+			preview += '<img class="ak-preview-img" src="' + override.previewImage + '" alt="' + repo.name + ' preview" loading="lazy">';
+		} else if (live) {
 			preview += '<iframe src="' + live + '" loading="lazy" title="Preview of ' + repo.name + '"></iframe>';
 		} else if (videoThumb) {
 			preview +=
