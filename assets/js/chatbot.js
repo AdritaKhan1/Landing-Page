@@ -32,8 +32,8 @@
 		},
 		{
 			id: "work",
-			keys: ["work", "job", "experience", "fellow", "fellowship", "headstarter", "career", "employed", "engineer", "professional", "internship"],
-			reply: "Work & experience:\n• Software Engineer Fellow at Headstarter AI (Jul – Aug 2024) — built full-stack web apps with React, Next.js, and HTML/CSS.\n• Founder of Afsara's Elegant Jewellery (2020 – present), a small business she started during the pandemic.\n• Tutor.\nShe also has a strong record of research and leadership from her UofT years.",
+			keys: ["work", "job", "experience", "fellow", "fellowship", "headstarter", "career", "employed", "engineer", "professional", "internship", "kumon", "instructor", "tutor", "tutoring"],
+			reply: "Work & experience:\n• Primary Instructor at Kumon Math & Reading (2016 – present) — breaks down complex concepts for learners at all levels and tracks progress with data.\n• Software Engineering Fellow at Headstarter AI (2024) — built full-stack web apps with React and Next.js in weekly build sprints.\n• Owner of Afsara's Elegant Jewellery (2020 – present), a small business she runs end to end.\nShe also has a strong record of research and leadership from her UofT years.",
 			chips: ["Her business", "Her projects →projects", "Her resume →resume"]
 		},
 		{
@@ -50,8 +50,8 @@
 		},
 		{
 			id: "leadership",
-			keys: ["leadership", "club", "clubs", "boss women", "vice president", "president", "volunteer", "lead", "empowerment", "women"],
-			reply: "Leadership: Adrita was Vice President of Boss Women UTM (2020–2021), a club focused on women's empowerment. She also led Facilitated Study Group sessions and was active in several clubs during her time at UofT.",
+			keys: ["leadership", "club", "clubs", "boss women", "vice president", "president", "volunteer", "lead", "empowerment", "women", "mentor", "erindale", "biology society", "helping hands", "opportunity exchange", "career summit"],
+			reply: "Leadership: Vice President of Boss Women Club, Mentor at Erindale Biology Society, Coordinator for UTM Helping Hands, and a volunteer at the Opportunity Exchange IT Career Summit (2017–2026). She also led Facilitated Study Group sessions during her time at UofT.",
 			chips: ["Her research", "About page →about"]
 		},
 		{
@@ -62,8 +62,8 @@
 		},
 		{
 			id: "skills",
-			keys: ["skill", "skills", "language", "languages", "tech", "stack", "tools", "programming", "ai", "technologies", "good at"],
-			reply: "Adrita works across software engineering and AI, with a foundation in computer science from TMU and her Headstarter AI fellowship. Her science background (biology, research) gives her a strong analytical and problem-solving toolkit. For a full breakdown, the Projects page shows the languages behind each repo and her resume lists more.",
+			keys: ["skill", "skills", "language", "languages", "tech", "stack", "tools", "programming", "ai", "technologies", "good at", "java", "python", "javascript", "spring", "django", "react", "docker"],
+			reply: "Adrita builds full-stack, production-style web apps across Java, Python, and JavaScript — REST APIs and back ends with Spring Boot, Django, and Node/Express, front ends with React and Next.js, and PostgreSQL/MySQL/MongoDB for data, shipped to the cloud with Docker and CI. She's also worked with real-time systems (WebRTC), concurrency-safe transactions, and multi-tenant architecture. For the full breakdown, see her Projects page or resume.",
 			chips: ["Her projects →projects", "Her resume →resume"]
 		},
 		{
