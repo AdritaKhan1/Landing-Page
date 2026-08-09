@@ -5,7 +5,7 @@
 		name: "Adrita Khan",
 		location: "Mississauga, Ontario",
 		email: "adrita.khan@torontomu.ca",
-		linkedin: "https://www.linkedin.com/in/adrita-khan-8b1017208/",
+		linkedin: "https://www.linkedin.com/in/adrita-afsara-khan/",
 		tagline: "A biologist turned software engineer."
 	};
 
